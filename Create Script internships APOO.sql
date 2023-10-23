@@ -1,4 +1,4 @@
-create table if not exists "Proiect APOO".angajati
+create table "Proiect APOO".stagiari
 (
     id                  integer not null
         constraint angajati_pk
@@ -11,10 +11,10 @@ create table if not exists "Proiect APOO".angajati
     observatii          varchar
 );
 
-alter table "Proiect APOO".angajati
+alter table "Proiect APOO".stagiari
     owner to postgres;
 
-create table if not exists "Proiect APOO".internship
+create table "Proiect APOO".internship
 (
     nume_pozitie         varchar,
     platit               boolean default false,
@@ -36,13 +36,13 @@ create table if not exists "Proiect APOO".internship
         constraint internship_pk2
             unique
         constraint internship_angajati_id_fk
-            references "Proiect APOO".angajati
+            references "Proiect APOO".stagiari
 );
 
 alter table "Proiect APOO".internship
     owner to postgres;
 
-create table if not exists "Proiect APOO".activitati
+create table "Proiect APOO".activitati
 (
     id                integer not null
         constraint activitati_pk
@@ -62,23 +62,23 @@ create table if not exists "Proiect APOO".activitati
 alter table "Proiect APOO".activitati
     owner to postgres;
 
-create index if not exists "Internship_stare_index"
+create index "Internship_stare_index"
     on "Proiect APOO".internship (stare);
 
-create table if not exists "Proiect APOO".legaturi_echipe
+create table "Proiect APOO".legaturi_echipe
 (
     id_echipa  serial
         constraint legaturi_echipe_internship_id_echipa_fk
             references "Proiect APOO".internship (id_echipa),
     id_angajat integer not null
         constraint legaturi_echipe_angajati_id_fk
-            references "Proiect APOO".angajati
+            references "Proiect APOO".stagiari
 );
 
 alter table "Proiect APOO".legaturi_echipe
     owner to postgres;
 
-create table if not exists "Proiect APOO".echipamente
+create table "Proiect APOO".echipamente
 (
     id            integer not null
         constraint echipamente_pk
@@ -88,9 +88,24 @@ create table if not exists "Proiect APOO".echipamente
     tip           varchar,
     id_angajat    integer
         constraint echipamente_angajati_id_fk
-            references "Proiect APOO".angajati
+            references "Proiect APOO".stagiari
 );
 
 alter table "Proiect APOO".echipamente
+    owner to postgres;
+
+create table "Proiect APOO".mentori
+(
+    id            integer not null
+        constraint mentori_pk
+            primary key,
+    nume          varchar,
+    id_internship integer
+        constraint mentori_internship_id_fk
+            references "Proiect APOO".internship,
+    departament   varchar
+);
+
+alter table "Proiect APOO".mentori
     owner to postgres;
 
